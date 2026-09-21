@@ -1,125 +1,312 @@
-const API_KEY = "AIzaSyAH_D19PMvjRlyWYgT4JmP2midMbzDOovc";
+const API_KEY = "PASTE_YOUR_NEW_API_KEY_HERE";
 
+let player = null;
 let isPlaying = false;
-let player;
+let currentVideoId = null;
 
-// YouTube Player API
+
+// Load YouTube Player API
 const tag = document.createElement("script");
+
 tag.src = "https://www.youtube.com/iframe_api";
+
 document.head.appendChild(tag);
 
+
+// YouTube API ready
 function onYouTubeIframeAPIReady() {
+
   player = new YT.Player("youtubePlayer", {
-    height: "180",
-    width: "320",
+
+    height: "200",
+    width: "100%",
+
     videoId: "",
+
     playerVars: {
       playsinline: 1
+    },
+
+    events: {
+
+      onStateChange: onPlayerStateChange
+
     }
+
   });
+
 }
 
 
-// Play selected YouTube song
-function playSong(songName, videoId) {
+// Player state
+function onPlayerStateChange(event) {
 
-  document.getElementById("currentSong").textContent = songName;
-  document.getElementById("currentArtist").textContent = "YouTube";
+  if (event.data === YT.PlayerState.PLAYING) {
 
-  if (player && videoId) {
-    player.loadVideoById(videoId);
-    player.playVideo();
-  }
-
-  isPlaying = true;
-  document.getElementById("playButton").textContent = "❚❚";
-}
-
-
-// Play / Pause
-function togglePlay() {
-
-  if (!player) return;
-
-  if (isPlaying) {
-    player.pauseVideo();
-    isPlaying = false;
-    document.getElementById("playButton").textContent = "▶";
-  } else {
-    player.playVideo();
     isPlaying = true;
+
     document.getElementById("playButton").textContent = "❚❚";
+
   }
+
+  if (event.data === YT.PlayerState.PAUSED) {
+
+    isPlaying = false;
+
+    document.getElementById("playButton").textContent = "▶";
+
+  }
+
 }
 
 
 // Search YouTube
-const searchInput = document.getElementById("searchInput");
-
-searchInput.addEventListener("input", async function () {
-
-  const query = this.value.trim();
-
-  if (query.length < 2) return;
+async function searchYouTube(query) {
 
   try {
 
     const url =
-      `https://www.googleapis.com/youtube/v3/search` +
-      `?part=snippet` +
-      `&q=${encodeURIComponent(query)}` +
-      `&type=video` +
-      `&videoEmbeddable=true` +
-      `&maxResults=10` +
-      `&key=${API_KEY}`;
+      "https://www.googleapis.com/youtube/v3/search" +
+      "?part=snippet" +
+      "&q=" + encodeURIComponent(query) +
+      "&type=video" +
+      "&videoEmbeddable=true" +
+      "&maxResults=10" +
+      "&key=" + API_KEY;
+
 
     const response = await fetch(url);
+
     const data = await response.json();
 
+
     if (data.error) {
+
       console.error(data.error);
-      return;
+
+      alert("YouTube API error. Check your API key.");
+
+      return [];
+
     }
 
-    displaySearchResults(data.items);
 
-  } catch (error) {
-    console.error("Search error:", error);
+    return data.items || [];
+
   }
 
-});
+  catch (error) {
+
+    console.error(error);
+
+    return [];
+
+  }
+
+}
 
 
-// Show YouTube results
+// Play song by searching YouTube
+async function playSong(songName) {
+
+  document.getElementById("currentSong").textContent = songName;
+
+  document.getElementById("currentArtist").textContent =
+    "Searching YouTube...";
+
+
+  const results = await searchYouTube(songName);
+
+
+  if (results.length === 0) {
+
+    document.getElementById("currentArtist").textContent =
+      "Song not found";
+
+    return;
+
+  }
+
+
+  const video = results[0];
+
+  const videoId = video.id.videoId;
+
+  currentVideoId = videoId;
+
+
+  document.getElementById("currentSong").textContent =
+    video.snippet.title;
+
+  document.getElementById("currentArtist").textContent =
+    video.snippet.channelTitle;
+
+
+  if (player) {
+
+    player.loadVideoById(videoId);
+
+    player.playVideo();
+
+    isPlaying = true;
+
+  }
+
+}
+
+
+// Play / pause
+function togglePlay() {
+
+  if (!player) return;
+
+
+  if (isPlaying) {
+
+    player.pauseVideo();
+
+  } else {
+
+    player.playVideo();
+
+  }
+
+}
+
+
+// Search box
+const searchInput =
+  document.getElementById("searchInput");
+
+
+searchInput.addEventListener(
+  "input",
+  async function () {
+
+    const query = this.value.trim();
+
+
+    if (query.length < 2) {
+
+      document.getElementById("searchResults").innerHTML = "";
+
+      return;
+
+    }
+
+
+    const results =
+      await searchYouTube(query);
+
+
+    displaySearchResults(results);
+
+  }
+);
+
+
+// Display search results
 function displaySearchResults(items) {
 
-  const container = document.getElementById("searchResults");
+  const container =
+    document.getElementById("searchResults");
 
-  if (!container) return;
 
   container.innerHTML = "";
+
 
   items.forEach(item => {
 
     const videoId = item.id.videoId;
+
     const title = item.snippet.title;
-    const thumbnail = item.snippet.thumbnails.medium.url;
 
-    const card = document.createElement("div");
+    const channel =
+      item.snippet.channelTitle;
 
-    card.className = "youtube-song";
+    const thumbnail =
+      item.snippet.thumbnails.medium.url;
+
+
+    const card =
+      document.createElement("div");
+
+
+    card.className = "song-card";
+
 
     card.innerHTML = `
-      <img src="${thumbnail}" alt="">
-      <div>
-        <h3>${title}</h3>
-        <p>${item.snippet.channelTitle}</p>
-      </div>
+
+      <img
+        src="${thumbnail}"
+        style="width:100%; border-radius:10px;"
+      >
+
+      <h3>${title}</h3>
+
+      <p>${channel}</p>
+
     `;
 
-    card.onclick = () => playSong(title, videoId);
+
+    card.onclick = function () {
+
+      playYouTubeVideo(
+        title,
+        channel,
+        videoId
+      );
+
+    };
+
 
     container.appendChild(card);
 
   });
+
+}
+
+
+// Play selected search result
+function playYouTubeVideo(
+  title,
+  channel,
+  videoId
+) {
+
+  document.getElementById("currentSong")
+    .textContent = title;
+
+
+  document.getElementById("currentArtist")
+    .textContent = channel;
+
+
+  currentVideoId = videoId;
+
+
+  if (player) {
+
+    player.loadVideoById(videoId);
+
+    player.playVideo();
+
+  }
+
+}
+
+
+// Previous button
+function previousSong() {
+
+  console.log("Previous song");
+
+}
+
+
+// Next button
+function nextSong() {
+
+  console.log("Next song");
+
 }
