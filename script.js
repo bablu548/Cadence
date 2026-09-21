@@ -2,66 +2,83 @@ const API_KEY = "AIzaSyApd6m7QSpcIQJVweNtUqfu_Qh3pEpu70U";
 
 let player = null;
 let isPlaying = false;
-let currentVideoId = null;
+let currentVideoId = "";
 
+/* =========================
+   YouTube IFrame Player
+========================= */
 
-// Load YouTube Player API
 const tag = document.createElement("script");
-
 tag.src = "https://www.youtube.com/iframe_api";
-
 document.head.appendChild(tag);
 
-
-// YouTube API ready
 function onYouTubeIframeAPIReady() {
-
   player = new YT.Player("youtubePlayer", {
-
-    height: "200",
-    width: "100%",
-
+    height: "180",
+    width: "320",
     videoId: "",
-
     playerVars: {
       playsinline: 1
     },
-
     events: {
+      onReady: function () {
+        console.log("YouTube Player Ready");
+      },
+      onStateChange: function (event) {
 
-      onStateChange: onPlayerStateChange
+        if (event.data === YT.PlayerState.PLAYING) {
+          isPlaying = true;
+          document.getElementById("playButton").textContent = "❚❚";
+        }
 
+        if (event.data === YT.PlayerState.PAUSED) {
+          isPlaying = false;
+          document.getElementById("playButton").textContent = "▶";
+        }
+
+        if (event.data === YT.PlayerState.ENDED) {
+          isPlaying = false;
+          document.getElementById("playButton").textContent = "▶";
+        }
+      }
     }
-
   });
-
 }
 
 
-// Player state
-function onPlayerStateChange(event) {
+/* =========================
+   Search YouTube
+========================= */
 
-  if (event.data === YT.PlayerState.PLAYING) {
+const searchInput = document.getElementById("searchInput");
 
-    isPlaying = true;
+let searchTimer;
 
-    document.getElementById("playButton").textContent = "❚❚";
+searchInput.addEventListener("input", function () {
 
+  const query = this.value.trim();
+
+  clearTimeout(searchTimer);
+
+  if (query.length < 2) {
+    return;
   }
 
-  if (event.data === YT.PlayerState.PAUSED) {
-
-    isPlaying = false;
-
-    document.getElementById("playButton").textContent = "▶";
-
-  }
-
-}
+  searchTimer = setTimeout(() => {
+    searchYouTube(query);
+  }, 500);
+});
 
 
-// Search YouTube
 async function searchYouTube(query) {
+
+  const songGrid = document.getElementById("songGrid");
+
+  songGrid.innerHTML = `
+    <p style="padding:20px;">
+      Searching YouTube...
+    </p>
+  `;
 
   try {
 
@@ -70,96 +87,133 @@ async function searchYouTube(query) {
       "?part=snippet" +
       "&q=" + encodeURIComponent(query) +
       "&type=video" +
+      "&videoCategoryId=10" +
       "&videoEmbeddable=true" +
       "&maxResults=10" +
+      "&regionCode=IN" +
       "&key=" + API_KEY;
-
 
     const response = await fetch(url);
 
     const data = await response.json();
 
+    if (!response.ok) {
+      console.error(data);
 
-    if (data.error) {
+      songGrid.innerHTML = `
+        <p style="padding:20px;">
+          YouTube API error.
+        </p>
+      `;
 
-      console.error(data.error);
-
-      alert("YouTube API error. Check your API key.");
-
-      return [];
-
+      return;
     }
 
+    displayResults(data.items);
 
-    return data.items || [];
-
-  }
-
-  catch (error) {
+  } catch (error) {
 
     console.error(error);
 
-    return [];
-
+    songGrid.innerHTML = `
+      <p style="padding:20px;">
+        Something went wrong.
+      </p>
+    `;
   }
-
 }
 
 
-// Play song by searching YouTube
-async function playSong(songName) {
+/* =========================
+   Display Results
+========================= */
 
-  document.getElementById("currentSong").textContent = songName;
+function displayResults(items) {
 
-  document.getElementById("currentArtist").textContent =
-    "Searching YouTube...";
+  const songGrid = document.getElementById("songGrid");
 
+  songGrid.innerHTML = "";
 
-  const results = await searchYouTube(songName);
+  if (!items || items.length === 0) {
 
-
-  if (results.length === 0) {
-
-    document.getElementById("currentArtist").textContent =
-      "Song not found";
+    songGrid.innerHTML = `
+      <p style="padding:20px;">
+        No songs found.
+      </p>
+    `;
 
     return;
-
   }
 
+  items.forEach(item => {
 
-  const video = results[0];
+    const videoId = item.id.videoId;
+    const title = item.snippet.title;
+    const channel = item.snippet.channelTitle;
+    const thumbnail = item.snippet.thumbnails.medium.url;
 
-  const videoId = video.id.videoId;
+    const card = document.createElement("div");
+
+    card.className = "song-card";
+
+    card.innerHTML = `
+      <img
+        src="${thumbnail}"
+        alt="${escapeHTML(title)}"
+        style="
+          width:100%;
+          aspect-ratio:16/9;
+          object-fit:cover;
+          border-radius:10px;
+        "
+      >
+
+      <h3>${escapeHTML(title)}</h3>
+
+      <p>${escapeHTML(channel)}</p>
+    `;
+
+    card.addEventListener("click", () => {
+      playSong(title, videoId, channel);
+    });
+
+    songGrid.appendChild(card);
+  });
+}
+
+
+/* =========================
+   Play Song
+========================= */
+
+function playSong(songName, videoId, artist = "YouTube") {
+
+  document.getElementById("currentSong").textContent = songName;
+  document.getElementById("currentArtist").textContent = artist;
 
   currentVideoId = videoId;
 
-
-  document.getElementById("currentSong").textContent =
-    video.snippet.title;
-
-  document.getElementById("currentArtist").textContent =
-    video.snippet.channelTitle;
-
-
-  if (player) {
+  if (player && videoId) {
 
     player.loadVideoById(videoId);
 
-    player.playVideo();
+  } else {
 
-    isPlaying = true;
+    console.log("YouTube player not ready");
 
   }
-
 }
 
 
-// Play / pause
+/* =========================
+   Play / Pause
+========================= */
+
 function togglePlay() {
 
-  if (!player) return;
-
+  if (!player || !currentVideoId) {
+    return;
+  }
 
   if (isPlaying) {
 
@@ -170,143 +224,18 @@ function togglePlay() {
     player.playVideo();
 
   }
-
 }
 
 
-// Search box
-const searchInput =
-  document.getElementById("searchInput");
+/* =========================
+   HTML Escape
+========================= */
 
+function escapeHTML(text) {
 
-searchInput.addEventListener(
-  "input",
-  async function () {
+  const div = document.createElement("div");
 
-    const query = this.value.trim();
+  div.textContent = text;
 
-
-    if (query.length < 2) {
-
-      document.getElementById("searchResults").innerHTML = "";
-
-      return;
-
-    }
-
-
-    const results =
-      await searchYouTube(query);
-
-
-    displaySearchResults(results);
-
-  }
-);
-
-
-// Display search results
-function displaySearchResults(items) {
-
-  const container =
-    document.getElementById("searchResults");
-
-
-  container.innerHTML = "";
-
-
-  items.forEach(item => {
-
-    const videoId = item.id.videoId;
-
-    const title = item.snippet.title;
-
-    const channel =
-      item.snippet.channelTitle;
-
-    const thumbnail =
-      item.snippet.thumbnails.medium.url;
-
-
-    const card =
-      document.createElement("div");
-
-
-    card.className = "song-card";
-
-
-    card.innerHTML = `
-
-      <img
-        src="${thumbnail}"
-        style="width:100%; border-radius:10px;"
-      >
-
-      <h3>${title}</h3>
-
-      <p>${channel}</p>
-
-    `;
-
-
-    card.onclick = function () {
-
-      playYouTubeVideo(
-        title,
-        channel,
-        videoId
-      );
-
-    };
-
-
-    container.appendChild(card);
-
-  });
-
-}
-
-
-// Play selected search result
-function playYouTubeVideo(
-  title,
-  channel,
-  videoId
-) {
-
-  document.getElementById("currentSong")
-    .textContent = title;
-
-
-  document.getElementById("currentArtist")
-    .textContent = channel;
-
-
-  currentVideoId = videoId;
-
-
-  if (player) {
-
-    player.loadVideoById(videoId);
-
-    player.playVideo();
-
-  }
-
-}
-
-
-// Previous button
-function previousSong() {
-
-  console.log("Previous song");
-
-}
-
-
-// Next button
-function nextSong() {
-
-  console.log("Next song");
-
+  return div.innerHTML;
 }
