@@ -9,212 +9,292 @@
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="logo">Cadence</div>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">Cadence</div>
 
-      <nav>
-        <a class="active" href="#">
-          <span>⌂</span> Home
-        </a>
+    <nav>
+      <a class="active" href="#">
+        <span>⌂</span> Home
+      </a>
 
-        <a href="#">
-          <span>⌕</span> Search
-        </a>
+      <a href="#searchInput">
+        <span>⌕</span> Search
+      </a>
 
-        <a href="#">
-          <span>▣</span> Your Library
-        </a>
-      </nav>
+      <a href="#">
+        <span>▣</span> Your Library
+      </a>
+    </nav>
 
-      <div class="playlist-title">YOUR PLAYLISTS</div>
+    <div class="playlist-title">YOUR PLAYLISTS</div>
 
-      <nav>
-        <a href="#"><span>＋</span> Create Playlist</a>
-        <a href="#"><span>♥</span> Liked Songs</a>
-      </nav>
-    </aside>
-
-
-    <!-- Main Content -->
-    <main class="main">
-
-      <!-- Header -->
-      <header class="header">
-        <div class="search">
-          <span>⌕</span>
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="What do you want to play?"
-          >
-        </div>
-
-        <button class="profile">👤</button>
-      </header>
+    <nav>
+      <a href="#"><span>＋</span> Create Playlist</a>
+      <a href="#"><span>♥</span> Liked Songs</a>
+    </nav>
+  </aside>
 
 
-      <!-- Content -->
-      <section class="content">
+  <!-- Main Content -->
+  <main class="main">
 
-        <h1>Good evening</h1>
+    <!-- Header -->
+    <header class="header">
 
-        <!-- Quick cards -->
-        <div class="quick-grid">
+      <div class="search">
+        <span>⌕</span>
 
-          <div class="quick-card">
-            <div class="quick-image">🎵</div>
-            <span>Liked Songs</span>
-            <button onclick="playSong('Liked Songs')">▶</button>
-          </div>
-
-          <div class="quick-card">
-            <div class="quick-image">🔥</div>
-            <span>Trending</span>
-            <button onclick="playSong('Trending')">▶</button>
-          </div>
-
-          <div class="quick-card">
-            <div class="quick-image">❤️</div>
-            <span>Favorites</span>
-            <button onclick="playSong('Favorites')">▶</button>
-          </div>
-
-        </div>
-
-
-        <!-- Trending -->
-        <div class="section-header">
-          <h2>Trending</h2>
-          <a href="#">Show all</a>
-        </div>
-
-        <div class="song-grid" id="songGrid">
-
-          <div class="song-card" onclick="playSong('Midnight Dreams')">
-            <div class="cover cover1">🎧</div>
-            <h3>Midnight Dreams</h3>
-            <p>Cadence Artist</p>
-          </div>
-
-          <div class="song-card" onclick="playSong('Lost In Time')">
-            <div class="cover cover2">🌙</div>
-            <h3>Lost In Time</h3>
-            <p>Cadence Artist</p>
-          </div>
-
-          <div class="song-card" onclick="playSong('Golden Hour')">
-            <div class="cover cover3">☀️</div>
-            <h3>Golden Hour</h3>
-            <p>Cadence Artist</p>
-          </div>
-
-          <div class="song-card" onclick="playSong('After Dark')">
-            <div class="cover cover4">🌃</div>
-            <h3>After Dark</h3>
-            <p>Cadence Artist</p>
-          </div>
-
-          <div class="song-card" onclick="playSong('Ocean Eyes')">
-            <div class="cover cover5">🌊</div>
-            <h3>Ocean Eyes</h3>
-            <p>Cadence Artist</p>
-          </div>
-
-        </div>
-
-
-        <!-- Recently Played -->
-        <div class="section-header">
-          <h2>Recently Played</h2>
-          <a href="#">Show all</a>
-        </div>
-
-        <div class="recent-list">
-
-          <div class="recent-song" onclick="playSong('Midnight Dreams')">
-            <div class="small-cover">🎧</div>
-            <div>
-              <strong>Midnight Dreams</strong>
-              <p>Cadence Artist</p>
-            </div>
-            <span>▶</span>
-          </div>
-
-          <div class="recent-song" onclick="playSong('Golden Hour')">
-            <div class="small-cover">☀️</div>
-            <div>
-              <strong>Golden Hour</strong>
-              <p>Cadence Artist</p>
-            </div>
-            <span>▶</span>
-          </div>
-
-        </div>
-
-      </section>
-
-    </main>
-
-
-    <!-- Bottom Player -->
-    <footer class="player">
-
-      <div class="now-playing">
-        <div class="player-cover" id="playerCover">🎵</div>
-
-        <div>
-          <strong id="currentSong">Select a song</strong>
-          <p id="currentArtist">Cadence</p>
-        </div>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="What do you want to play?"
+        >
       </div>
 
+      <button class="profile">👤</button>
 
-      <div class="controls">
+    </header>
 
-        <div class="buttons">
-          <button>↶</button>
 
-          <button
-            class="play-button"
-            id="playButton"
-            onclick="togglePlay()"
-          >
-            ▶
-          </button>
+    <!-- Content -->
+    <section class="content">
 
-          <button>↷</button>
+      <h1>Good evening</h1>
+
+
+      <!-- Quick cards -->
+      <div class="quick-grid">
+
+        <div class="quick-card">
+          <div class="quick-image">🎵</div>
+          <span>Liked Songs</span>
+          <button onclick="playSong('Liked Songs')">▶</button>
         </div>
 
-        <div class="progress-container">
-          <span>0:00</span>
+        <div class="quick-card">
+          <div class="quick-image">🔥</div>
+          <span>Trending</span>
+          <button onclick="playSong('Trending music')">▶</button>
+        </div>
 
-          <input
-            type="range"
-            id="progress"
-            min="0"
-            max="100"
-            value="0"
-          >
-
-          <span>3:45</span>
+        <div class="quick-card">
+          <div class="quick-image">❤️</div>
+          <span>Favorites</span>
+          <button onclick="playSong('Favorites music')">▶</button>
         </div>
 
       </div>
 
 
-      <div class="volume">
-        🔊
-        <input type="range" min="0" max="100" value="70">
+      <!-- YouTube Search Results -->
+      <div class="section-header">
+        <h2>Search Results</h2>
       </div>
 
-    </footer>
+      <div id="searchResults" class="song-grid"></div>
 
-  </div>
 
-  <script src="script.js"></script>
+      <!-- Trending -->
+      <div class="section-header">
+        <h2>Trending</h2>
+        <a href="#">Show all</a>
+      </div>
+
+      <div class="song-grid" id="songGrid">
+
+        <div
+          class="song-card"
+          onclick="playSong('Midnight Dreams')"
+        >
+          <div class="cover cover1">🎧</div>
+          <h3>Midnight Dreams</h3>
+          <p>Search YouTube</p>
+        </div>
+
+
+        <div
+          class="song-card"
+          onclick="playSong('Lost In Time')"
+        >
+          <div class="cover cover2">🌙</div>
+          <h3>Lost In Time</h3>
+          <p>Search YouTube</p>
+        </div>
+
+
+        <div
+          class="song-card"
+          onclick="playSong('Golden Hour')"
+        >
+          <div class="cover cover3">☀️</div>
+          <h3>Golden Hour</h3>
+          <p>Search YouTube</p>
+        </div>
+
+
+        <div
+          class="song-card"
+          onclick="playSong('After Dark')"
+        >
+          <div class="cover cover4">🌃</div>
+          <h3>After Dark</h3>
+          <p>Search YouTube</p>
+        </div>
+
+
+        <div
+          class="song-card"
+          onclick="playSong('Ocean Eyes')"
+        >
+          <div class="cover cover5">🌊</div>
+          <h3>Ocean Eyes</h3>
+          <p>Search YouTube</p>
+        </div>
+
+      </div>
+
+
+      <!-- Recently Played -->
+      <div class="section-header">
+        <h2>Recently Played</h2>
+        <a href="#">Show all</a>
+      </div>
+
+      <div class="recent-list">
+
+        <div
+          class="recent-song"
+          onclick="playSong('Midnight Dreams')"
+        >
+          <div class="small-cover">🎧</div>
+
+          <div>
+            <strong>Midnight Dreams</strong>
+            <p>YouTube</p>
+          </div>
+
+          <span>▶</span>
+        </div>
+
+
+        <div
+          class="recent-song"
+          onclick="playSong('Golden Hour')"
+        >
+          <div class="small-cover">☀️</div>
+
+          <div>
+            <strong>Golden Hour</strong>
+            <p>YouTube</p>
+          </div>
+
+          <span>▶</span>
+        </div>
+
+      </div>
+
+
+      <!-- YouTube Player -->
+      <div class="youtube-section">
+
+        <h2>Player</h2>
+
+        <div id="youtubePlayer"></div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- Bottom Player -->
+  <footer class="player">
+
+    <div class="now-playing">
+
+      <div class="player-cover" id="playerCover">
+        🎵
+      </div>
+
+      <div>
+        <strong id="currentSong">
+          Select a song
+        </strong>
+
+        <p id="currentArtist">
+          Cadence
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="controls">
+
+      <div class="buttons">
+
+        <button onclick="previousSong()">↶</button>
+
+        <button
+          class="play-button"
+          id="playButton"
+          onclick="togglePlay()"
+        >
+          ▶
+        </button>
+
+        <button onclick="nextSong()">↷</button>
+
+      </div>
+
+
+      <div class="progress-container">
+
+        <span id="currentTime">
+          0:00
+        </span>
+
+        <input
+          type="range"
+          id="progress"
+          min="0"
+          max="100"
+          value="0"
+        >
+
+        <span id="duration">
+          0:00
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="volume">
+
+      🔊
+
+      <input
+        type="range"
+        id="volume"
+        min="0"
+        max="100"
+        value="70"
+      >
+
+    </div>
+
+  </footer>
+
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
