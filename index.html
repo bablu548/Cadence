@@ -2,299 +2,536 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Cadence Music</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">Cadence</div>
+    <!-- ================= SIDEBAR ================= -->
 
-    <nav>
-      <a class="active" href="#">
-        <span>⌂</span> Home
-      </a>
+    <aside class="sidebar">
 
-      <a href="#searchInput">
-        <span>⌕</span> Search
-      </a>
+      <div class="logo">C</div>
 
-      <a href="#">
-        <span>▣</span> Your Library
-      </a>
-    </nav>
+      <nav>
 
-    <div class="playlist-title">YOUR PLAYLISTS</div>
+        <a class="active" href="#">
+          <span>⌂</span>
+          Home
+        </a>
 
-    <nav>
-      <a href="#"><span>＋</span> Create Playlist</a>
-      <a href="#"><span>♥</span> Liked Songs</a>
-    </nav>
-  </aside>
+        <a href="#">
+          <span>⌕</span>
+          Search
+        </a>
 
+        <a href="#">
+          <span>▣</span>
+          Your Library
+        </a>
 
-  <!-- Main Content -->
-  <main class="main">
+      </nav>
 
-    <!-- Header -->
-    <header class="header">
-
-      <div class="search">
-        <span>⌕</span>
-
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="What do you want to play?"
-        >
+      <div class="playlist-title">
+        YOUR PLAYLISTS
       </div>
 
-      <button class="profile">👤</button>
+      <nav>
 
-    </header>
+        <a href="#">
+          <span>＋</span>
+          Create Playlist
+        </a>
+
+        <a href="#">
+          <span>♥</span>
+          Liked Songs
+        </a>
+
+      </nav>
+
+    </aside>
 
 
-    <!-- Content -->
-    <section class="content">
+    <!-- ================= MAIN ================= -->
 
-      <h1>Good evening</h1>
+    <main class="main">
 
+      <!-- HEADER -->
 
-      <!-- Quick cards -->
-      <div class="quick-grid">
+      <header class="header">
 
-        <div class="quick-card">
-          <div class="quick-image">🎵</div>
-          <span>Liked Songs</span>
-          <button onclick="playSong('Liked Songs')">▶</button>
+        <div class="search">
+
+          <span>⌕</span>
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="What do you want to play?"
+          >
+
         </div>
 
-        <div class="quick-card">
-          <div class="quick-image">🔥</div>
-          <span>Trending</span>
-          <button onclick="playSong('Trending music')">▶</button>
-        </div>
-
-        <div class="quick-card">
-          <div class="quick-image">❤️</div>
-          <span>Favorites</span>
-          <button onclick="playSong('Favorites music')">▶</button>
-        </div>
-
-      </div>
-
-
-      <!-- YouTube Search Results -->
-      <div class="section-header">
-        <h2>Search Results</h2>
-      </div>
-
-      <div id="searchResults" class="song-grid"></div>
-
-
-      <!-- Trending -->
-      <div class="section-header">
-        <h2>Trending</h2>
-        <a href="#">Show all</a>
-      </div>
-
-      <div class="song-grid" id="songGrid">
-
-        <div
-          class="song-card"
-          onclick="playSong('Midnight Dreams')"
-        >
-          <div class="cover cover1">🎧</div>
-          <h3>Midnight Dreams</h3>
-          <p>Search YouTube</p>
-        </div>
-
-
-        <div
-          class="song-card"
-          onclick="playSong('Lost In Time')"
-        >
-          <div class="cover cover2">🌙</div>
-          <h3>Lost In Time</h3>
-          <p>Search YouTube</p>
-        </div>
-
-
-        <div
-          class="song-card"
-          onclick="playSong('Golden Hour')"
-        >
-          <div class="cover cover3">☀️</div>
-          <h3>Golden Hour</h3>
-          <p>Search YouTube</p>
-        </div>
-
-
-        <div
-          class="song-card"
-          onclick="playSong('After Dark')"
-        >
-          <div class="cover cover4">🌃</div>
-          <h3>After Dark</h3>
-          <p>Search YouTube</p>
-        </div>
-
-
-        <div
-          class="song-card"
-          onclick="playSong('Ocean Eyes')"
-        >
-          <div class="cover cover5">🌊</div>
-          <h3>Ocean Eyes</h3>
-          <p>Search YouTube</p>
-        </div>
-
-      </div>
-
-
-      <!-- Recently Played -->
-      <div class="section-header">
-        <h2>Recently Played</h2>
-        <a href="#">Show all</a>
-      </div>
-
-      <div class="recent-list">
-
-        <div
-          class="recent-song"
-          onclick="playSong('Midnight Dreams')"
-        >
-          <div class="small-cover">🎧</div>
-
-          <div>
-            <strong>Midnight Dreams</strong>
-            <p>YouTube</p>
-          </div>
-
-          <span>▶</span>
-        </div>
-
-
-        <div
-          class="recent-song"
-          onclick="playSong('Golden Hour')"
-        >
-          <div class="small-cover">☀️</div>
-
-          <div>
-            <strong>Golden Hour</strong>
-            <p>YouTube</p>
-          </div>
-
-          <span>▶</span>
-        </div>
-
-      </div>
-
-
-      <!-- YouTube Player -->
-      <div class="youtube-section">
-
-        <h2>Player</h2>
-
-        <div id="youtubePlayer"></div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- Bottom Player -->
-  <footer class="player">
-
-    <div class="now-playing">
-
-      <div class="player-cover" id="playerCover">
-        🎵
-      </div>
-
-      <div>
-        <strong id="currentSong">
-          Select a song
-        </strong>
-
-        <p id="currentArtist">
-          Cadence
-        </p>
-      </div>
-
-    </div>
-
-
-    <div class="controls">
-
-      <div class="buttons">
-
-        <button onclick="previousSong()">↶</button>
-
-        <button
-          class="play-button"
-          id="playButton"
-          onclick="togglePlay()"
-        >
-          ▶
+        <button class="profile">
+          👤
         </button>
 
-        <button onclick="nextSong()">↷</button>
+      </header>
+
+
+      <!-- ================= CONTENT ================= -->
+
+      <section class="content">
+
+        <h1>Good evening</h1>
+
+
+        <!-- QUICK CARDS -->
+
+        <div class="quick-grid">
+
+          <div class="quick-card">
+
+            <div class="quick-image">
+              🎵
+            </div>
+
+            <span>
+              Liked Songs
+            </span>
+
+            <button
+              onclick="playPlaylist('Liked Songs')"
+            >
+              ▶
+            </button>
+
+          </div>
+
+
+          <div class="quick-card">
+
+            <div class="quick-image">
+              🔥
+            </div>
+
+            <span>
+              Trending
+            </span>
+
+            <button
+              onclick="playPlaylist('Trending')"
+            >
+              ▶
+            </button>
+
+          </div>
+
+
+          <div class="quick-card">
+
+            <div class="quick-image">
+              ❤️
+            </div>
+
+            <span>
+              Favorites
+            </span>
+
+            <button
+              onclick="playPlaylist('Favorites')"
+            >
+              ▶
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= YOUTUBE SEARCH RESULTS ================= -->
+
+        <div
+          id="youtubeResults"
+          class="youtube-results"
+        ></div>
+
+
+        <!-- ================= TRENDING ================= -->
+
+        <div class="section-header">
+
+          <h2>
+            Trending
+          </h2>
+
+          <a href="#">
+            Show all
+          </a>
+
+        </div>
+
+
+        <div
+          class="song-grid"
+          id="songGrid"
+        >
+
+
+          <!-- SONG 1 -->
+
+          <div
+            class="song-card"
+            onclick="playSong(
+              'Midnight Dreams',
+              'VIDEO_ID_1'
+            )"
+          >
+
+            <div class="cover cover1">
+              🎧
+            </div>
+
+            <h3>
+              Midnight Dreams
+            </h3>
+
+            <p>
+              Cadence Artist
+            </p>
+
+          </div>
+
+
+          <!-- SONG 2 -->
+
+          <div
+            class="song-card"
+            onclick="playSong(
+              'Lost In Time',
+              'VIDEO_ID_2'
+            )"
+          >
+
+            <div class="cover cover2">
+              🌙
+            </div>
+
+            <h3>
+              Lost In Time
+            </h3>
+
+            <p>
+              Cadence Artist
+            </p>
+
+          </div>
+
+
+          <!-- SONG 3 -->
+
+          <div
+            class="song-card"
+            onclick="playSong(
+              'Golden Hour',
+              'VIDEO_ID_3'
+            )"
+          >
+
+            <div class="cover cover3">
+              ☀️
+            </div>
+
+            <h3>
+              Golden Hour
+            </h3>
+
+            <p>
+              Cadence Artist
+            </p>
+
+          </div>
+
+
+          <!-- SONG 4 -->
+
+          <div
+            class="song-card"
+            onclick="playSong(
+              'After Dark',
+              'VIDEO_ID_4'
+            )"
+          >
+
+            <div class="cover cover4">
+              🌃
+            </div>
+
+            <h3>
+              After Dark
+            </h3>
+
+            <p>
+              Cadence Artist
+            </p>
+
+          </div>
+
+
+          <!-- SONG 5 -->
+
+          <div
+            class="song-card"
+            onclick="playSong(
+              'Ocean Eyes',
+              'VIDEO_ID_5'
+            )"
+          >
+
+            <div class="cover cover5">
+              🌊
+            </div>
+
+            <h3>
+              Ocean Eyes
+            </h3>
+
+            <p>
+              Cadence Artist
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- ================= RECENTLY PLAYED ================= -->
+
+        <div class="section-header">
+
+          <h2>
+            Recently Played
+          </h2>
+
+          <a href="#">
+            Show all
+          </a>
+
+        </div>
+
+
+        <div class="recent-list">
+
+
+          <div
+            class="recent-song"
+            onclick="playSong(
+              'Midnight Dreams',
+              'VIDEO_ID_1'
+            )"
+          >
+
+            <div class="small-cover">
+              🎧
+            </div>
+
+            <div>
+
+              <strong>
+                Midnight Dreams
+              </strong>
+
+              <p>
+                Cadence Artist
+              </p>
+
+            </div>
+
+            <span>
+              ▶
+            </span>
+
+          </div>
+
+
+          <div
+            class="recent-song"
+            onclick="playSong(
+              'Golden Hour',
+              'VIDEO_ID_3'
+            )"
+          >
+
+            <div class="small-cover">
+              ☀️
+            </div>
+
+            <div>
+
+              <strong>
+                Golden Hour
+              </strong>
+
+              <p>
+                Cadence Artist
+              </p>
+
+            </div>
+
+            <span>
+              ▶
+            </span>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- ================= YOUTUBE PLAYER ================= -->
+
+    <div id="youtubePlayer"></div>
+
+
+    <!-- ================= BOTTOM PLAYER ================= -->
+
+    <footer class="player">
+
+
+      <!-- NOW PLAYING -->
+
+      <div class="now-playing">
+
+        <div
+          class="player-cover"
+          id="playerCover"
+        >
+          🎵
+        </div>
+
+        <div>
+
+          <strong id="currentSong">
+            Select a song
+          </strong>
+
+          <p id="currentArtist">
+            Cadence
+          </p>
+
+        </div>
 
       </div>
 
 
-      <div class="progress-container">
+      <!-- CONTROLS -->
 
-        <span id="currentTime">
-          0:00
-        </span>
+      <div class="controls">
+
+
+        <div class="buttons">
+
+          <button
+            onclick="previousSong()"
+          >
+            ↶
+          </button>
+
+
+          <button
+            class="play-button"
+            id="playButton"
+            onclick="togglePlay()"
+          >
+            ▶
+          </button>
+
+
+          <button
+            onclick="nextSong()"
+          >
+            ↷
+          </button>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-container">
+
+          <span id="currentTime">
+            0:00
+          </span>
+
+
+          <input
+            type="range"
+            id="progress"
+            min="0"
+            max="100"
+            value="0"
+          >
+
+
+          <span id="duration">
+            0:00
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- VOLUME -->
+
+      <div class="volume">
+
+        🔊
 
         <input
           type="range"
-          id="progress"
+          id="volume"
           min="0"
           max="100"
-          value="0"
+          value="70"
         >
-
-        <span id="duration">
-          0:00
-        </span>
 
       </div>
 
-    </div>
+
+    </footer>
+
+  </div>
 
 
-    <div class="volume">
+  <!-- YouTube IFrame API -->
 
-      🔊
-
-      <input
-        type="range"
-        id="volume"
-        min="0"
-        max="100"
-        value="70"
-      >
-
-    </div>
-
-  </footer>
-
-</div>
+  <script
+    src="https://www.youtube.com/iframe_api"
+  ></script>
 
 
-<script src="script.js"></script>
+  <!-- Your JavaScript -->
+
+  <script src="script.js"></script>
 
 </body>
 </html>
