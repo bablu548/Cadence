@@ -3,7 +3,7 @@
 // ==========================================
 
 // Paste your YouTube Data API key here
-const API_KEY = "YOUR_API_KEY";
+const API_KEY = "AIzaSyApd6m7QSpcIQJVweNtUqfu_Qh3pEpu70U";
 
 
 // ==========================================
