@@ -1,4 +1,4 @@
-const API_KEY = "PASTE_YOUR_NEW_API_KEY_HERE";
+const API_KEY = "AIzaSyApd6m7QSpcIQJVweNtUqfu_Qh3pEpu70U";
 
 let player = null;
 let isPlaying = false;
